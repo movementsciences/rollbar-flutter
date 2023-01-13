@@ -12,8 +12,8 @@ import 'event.dart';
 @sealed
 class Rollbar {
   static Rollbar? _current;
-  static Rollbar get current => _current.orElse(() =>
-      throw StateError('Rollbar has not been initialized, call Rollbar.run.'));
+  static Rollbar get current =>
+      _current.orElse(() => throw StateError('Rollbar has not been initialized, call Rollbar.run.'));
 
   final Notifier _notifier;
 
@@ -32,54 +32,52 @@ class Rollbar {
   /// ```dart
   /// Rollbar.log('Some message');
   /// ```
-  static FutureOr<void> log(String message, {Level level = Level.info}) =>
-      current._notifier.notify(Event(
+  static FutureOr<void> log(String message, {Level level = Level.info}) => current._notifier.notify(Event(
         level: level,
         message: message,
       ));
 
   /// Sends an error as an occurrence, with [Level.debug] level.
-  static FutureOr<void> debug(dynamic error, StackTrace stackTrace) =>
-      current._notifier.notify(Event(
+  static FutureOr<void> debug(dynamic error, StackTrace stackTrace) => current._notifier.notify(Event(
         level: Level.debug,
         error: error,
         stackTrace: stackTrace,
       ));
 
   /// Sends an error as an occurrence, with [Level.info] level.
-  static FutureOr<void> info(dynamic error, StackTrace stackTrace) =>
-      current._notifier.notify(Event(
+  static FutureOr<void> info(dynamic error, StackTrace stackTrace) => current._notifier.notify(Event(
         level: Level.info,
         error: error,
         stackTrace: stackTrace,
       ));
 
   /// Sends an error as an occurrence, with [Level.warning] level.
-  static FutureOr<void> warn(dynamic error, StackTrace stackTrace) =>
-      current._notifier.notify(Event(
+  static FutureOr<void> warn(dynamic error, StackTrace stackTrace) => current._notifier.notify(Event(
         level: Level.warning,
         error: error,
         stackTrace: stackTrace,
       ));
 
   /// Sends an error as an occurrence, with [Level.error] level.
-  static FutureOr<void> error(dynamic error, StackTrace stackTrace) =>
-      current._notifier.notify(Event(
+  static FutureOr<void> error(dynamic error, StackTrace stackTrace) => current._notifier.notify(Event(
         level: Level.error,
         error: error,
         stackTrace: stackTrace,
       ));
 
   /// Sends an error as an occurrence, with [Level.critical] level.
-  static FutureOr<void> critical(dynamic error, StackTrace stackTrace) =>
-      current._notifier.notify(Event(
+  static FutureOr<void> critical(dynamic error, StackTrace stackTrace) => current._notifier.notify(Event(
         level: Level.critical,
         error: error,
         stackTrace: stackTrace,
       ));
 
-  static FutureOr<void> setUser(User? user) {
-    current._notifier.notify(Event(user: user));
+  static FutureOr<void> setUser(User user) {
+    current._notifier.notify(Event(user: user, setUser: true));
+  }
+
+  static FutureOr<void> unsetUser() {
+    current._notifier.notify(Event(setUser: true));
   }
 
   /// Drops a breadcrumb with information about state, a change of state, an

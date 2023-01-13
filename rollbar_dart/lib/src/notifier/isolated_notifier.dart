@@ -43,11 +43,8 @@ class IsolatedNotifier extends AsyncNotifier {
 
   static Future<IsolatedNotifier> spawn(Config config) async {
     final receivePort = ReceivePort();
-    final isolate = await Isolate.spawn(
-        _IsolatedNotifier$Isolate.run, Tuple2(receivePort.sendPort, config),
-        paused: false,
-        errorsAreFatal: true,
-        debugName: 'IsolatedNotifier\$Isolate');
+    final isolate = await Isolate.spawn(_IsolatedNotifier$Isolate.run, Tuple2(receivePort.sendPort, config),
+        paused: false, errorsAreFatal: true, debugName: 'IsolatedNotifier\$Isolate');
     final sendPort = await receivePort.first;
 
     return IsolatedNotifier._(config, isolate, receivePort, sendPort);
@@ -72,10 +69,10 @@ extension _IsolatedNotifier$Isolate on IsolatedNotifier {
     context = Context();
 
     await for (final Event event in receivePort) {
-      if (event.user != null) {
+      if (event.setUser) {
         context.user = event.user;
       } else if (event.breadcrumb != null) {
-        telemetry.add(event.breadcrumb as Breadcrumb);
+        telemetry.add(event.breadcrumb!);
       } else {
         telemetry.removeExpired();
 

@@ -14,6 +14,7 @@ class Event {
   final StackTrace? stackTrace;
   final String? message;
   final User? user;
+  final bool setUser;
   final Breadcrumb? breadcrumb;
   final Context? context;
   final Telemetry? telemetry;
@@ -24,6 +25,7 @@ class Event {
     this.stackTrace,
     this.message,
     this.user,
+    this.setUser = false,
     this.breadcrumb,
     this.context,
     this.telemetry,
@@ -35,6 +37,7 @@ class Event {
     StackTrace? stackTrace,
     String? message,
     User? user,
+    bool? setUser,
     Breadcrumb? breadcrumb,
     Context? context,
     Telemetry? telemetry,
@@ -45,6 +48,7 @@ class Event {
           stackTrace: stackTrace ?? this.stackTrace,
           message: message ?? this.message,
           user: user ?? this.user,
+          setUser: setUser ?? this.setUser,
           breadcrumb: breadcrumb ?? this.breadcrumb,
           context: context ?? this.context,
           telemetry: telemetry ?? this.telemetry);
@@ -56,6 +60,7 @@ class Event {
       'stackTrace: $stackTrace, '
       'message: $message, '
       'user: $user, '
+      'setUser: $setUser, '
       'breadcrumb: $breadcrumb, '
       'context: $context, '
       'telemetry: $telemetry)';
@@ -69,6 +74,7 @@ class Event {
           other.stackTrace == stackTrace &&
           other.message == message &&
           other.user == user &&
+          other.setUser == setUser &&
           other.breadcrumb == breadcrumb &&
           other.context == context &&
           other.telemetry == telemetry);
@@ -80,6 +86,7 @@ class Event {
         stackTrace,
         message,
         user,
+        setUser,
         breadcrumb,
         context,
         telemetry,
