@@ -35,10 +35,10 @@ class AsyncNotifier implements Notifier {
 
   @override
   FutureOr<void> notify(Event event) async {
-    if (event.user != null) {
+    if (event.setUser) {
       context.user = event.user;
     } else if (event.breadcrumb != null) {
-      telemetry.add(event.breadcrumb as Breadcrumb);
+      telemetry.add(event.breadcrumb!);
     } else {
       telemetry.removeExpired();
 
